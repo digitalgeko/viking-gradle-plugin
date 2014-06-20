@@ -1,0 +1,73 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: 'sonar-runner'
+
+def groupId = 'org.vikingportlets'
+def artifactId = "viking-gradle-plugin"
+def versionNumber = '0.3.22'
+
+group = groupId
+version = versionNumber
+
+
+// *****************************************************
+// * This is a sample gradle.build for viking projects *
+// *****************************************************
+//
+//buildscript {
+//    repositories {
+//        mavenLocal()
+//    }
+//    dependencies {
+//        classpath 'org.vikingportlets:viking-gradle-plugin:0.3'
+//    }
+//}
+//
+//apply plugin: 'viking'
+//
+//sourceCompatibility = '1.6'
+//targetCompatibility = '1.6'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile gradleApi()
+	compile localGroovy()
+	compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7'
+	compile 'org.apache.httpcomponents:httpmime:4.3.2'
+}
+
+jar {
+	archiveName = "${artifactId}-${version}.jar"
+}
+
+sonarRunner {
+	sonarProperties {
+		property "sonar.host.url", "http://192.241.239.69:9000"
+		property "sonar.jdbc.url", "jdbc:mysql://localhost:3306/sonarqube?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true"
+		property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+		property "sonar.jdbc.username", "sonarqube"
+		property "sonar.jdbc.password", "sonarqube"
+		property "sonar.language", "grvy"
+	}
+}
+
+
+// Artifactory
+uploadArchives {
+	repositories {
+		repositories.mavenDeployer {
+			repository(url: "http://107.170.56.196:8081/artifactory/libs-release-local") {
+				authentication(userName: ARTIFACTORY_VIKING_USERNAME, password: ARTIFACTORY_VIKING_PASSWORD)
+			}
+			snapshotRepository(url: "http://107.170.56.196:8081/artifactory/libs-snapshot-local") {
+				authentication(userName: ARTIFACTORY_VIKING_USERNAME, password: ARTIFACTORY_VIKING_PASSWORD)
+			}
+			pom.version = versionNumber
+			pom.artifactId = artifactId
+			pom.groupId = groupId
+		}
+	}
+}
