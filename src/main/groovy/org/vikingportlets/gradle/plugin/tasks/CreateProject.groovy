@@ -29,6 +29,12 @@ class CreateProject extends DefaultTask {
 
         println "Creating new project..."
         projectStructure.each { it.mkdirs() }
+
+        def coffeGitIgnore = new File("$project.projectDir/public/coffee/.gitignore")
+        if (!coffeGitIgnore.exists()) {
+            coffeGitIgnore.createNewFile()
+        }
+
         project.copy {
             from '.templates/conf'
             into "conf"
