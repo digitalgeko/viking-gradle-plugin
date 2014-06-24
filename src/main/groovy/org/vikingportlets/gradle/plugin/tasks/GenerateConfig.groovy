@@ -2,7 +2,6 @@ package org.vikingportlets.gradle.plugin.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.bundling.Zip
 import org.vikingportlets.gradle.plugin.utils.ConfUtils
 import org.vikingportlets.gradle.plugin.utils.PortletUtils
 

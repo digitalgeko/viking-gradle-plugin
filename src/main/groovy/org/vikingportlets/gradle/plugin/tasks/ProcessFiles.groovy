@@ -1,10 +1,9 @@
 package org.vikingportlets.gradle.plugin.tasks
 
+import groovy.io.FileType
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
-import org.vikingportlets.gradle.plugin.utils.ConfUtils
-import org.vikingportlets.gradle.plugin.utils.PortletUtils
-import groovy.io.FileType
+
 /**
  * Created with IntelliJ IDEA.
  * User: juanitoramonster

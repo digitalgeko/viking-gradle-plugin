@@ -1,6 +1,7 @@
 package org.vikingportlets.gradle.plugin
 
-import org.gradle.api.*
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.WarPlugin
@@ -8,7 +9,6 @@ import org.gradle.api.tasks.bundling.Zip
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.vikingportlets.gradle.plugin.tasks.*
 import org.vikingportlets.gradle.plugin.utils.ConfUtils
-
 
 class Viking implements Plugin<Project> {
 

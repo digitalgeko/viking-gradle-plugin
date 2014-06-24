@@ -1,14 +1,10 @@
 package org.vikingportlets.gradle.plugin.tasks
 
-import groovy.io.FileType
-import groovyx.net.http.ContentType
+import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
-import org.apache.http.entity.mime.MultipartEntity
 import org.apache.http.entity.mime.MultipartEntityBuilder
-import org.apache.http.entity.mime.content.ByteArrayBody
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
-import groovyx.net.http.HTTPBuilder
 
 /**
  * Created with IntelliJ IDEA.
