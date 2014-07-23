@@ -85,6 +85,11 @@ class Viking implements Plugin<Project> {
                     srcDirs = ['conf', 'resources']
                 }
             }
+            test {
+                groovy {
+                    srcDirs = ['test']
+                }
+            }
         }
 
         project.war {

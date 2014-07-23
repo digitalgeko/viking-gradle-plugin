@@ -4,7 +4,7 @@ apply plugin: 'sonar-runner'
 
 def groupId = 'org.vikingportlets'
 def artifactId = "viking-gradle-plugin"
-def versionNumber = '0.3.25'
+def versionNumber = '0.3.26'
 
 group = groupId
 version = versionNumber
