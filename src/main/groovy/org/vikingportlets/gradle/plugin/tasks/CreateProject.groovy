@@ -58,7 +58,7 @@ class CreateProject extends DefaultTask {
         project.copy {
             from '.templates/public/js'
             into "public/js"
-            include '*.js'
+            include '*/*'
         }
         project.copy {
             from '.templates/public/icon.png'
@@ -78,6 +78,14 @@ class CreateProject extends DefaultTask {
             include 'sites.groovy'
             expand(projectName: project.name)
         }
+
+        project.copy {
+            from '.templates/public/js/angular'
+            into "public/js/angular"
+            include 'init.js'
+            expand(projectName: project.name)
+        }
+
 //        project.tasks["add"].ext.portletName = project.name
         project.viking.portletName = project.name
         project.tasks["add"].execute()
