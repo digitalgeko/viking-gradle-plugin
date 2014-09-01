@@ -46,7 +46,7 @@ class Viking implements Plugin<Project> {
         def liferayVersion = project.hasProperty("liferayVersion") ? project.liferayVersion : "6.1.1"
         
         project.dependencies {
-            compile 'org.vikingportlets:viking-framework:0.2.25'
+            compile 'org.vikingportlets:viking-framework:0.2.28'
             compile 'org.codehaus.groovy:groovy-all:2.1.3'
             providedCompile group: 'com.liferay.portal', name: 'portal-service', version: liferayVersion
             providedCompile group: 'com.liferay.portal', name: 'util-bridges', version: liferayVersion
