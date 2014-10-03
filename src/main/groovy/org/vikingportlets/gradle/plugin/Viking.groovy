@@ -13,7 +13,6 @@ import org.vikingportlets.gradle.plugin.utils.ConfUtils
 class Viking implements Plugin<Project> {
 
     public static final String VIKING_PROJECT_TASK_NAME = "new"
-    public static final String VIKING_ADD_PORTLET_TASK_NAME = "add"
     public static final String LIST_PORTLETS_TASK_NAME = "list-portlets"
     public static final String COMPILE_COFFEE_TASK_NAME = "compile-coffee"
     public static final String GENERATE_CONFIGURATION_TASK_NAME = "generate-config"
@@ -137,9 +136,6 @@ class Viking implements Plugin<Project> {
         def newProject = project.tasks.create(VIKING_PROJECT_TASK_NAME, CreateProject.class)
         newProject.description = "Creates a new viking project."
         newProject.dependsOn('version')
-
-        def addPortlet = project.tasks.create(VIKING_ADD_PORTLET_TASK_NAME, AddPortlet.class)
-        addPortlet.description = "Add a new portlet to the project."
 
         def listPortlets = project.tasks.create(LIST_PORTLETS_TASK_NAME, ListPortlets.class)
         listPortlets.description = "Lists existing portlets."
