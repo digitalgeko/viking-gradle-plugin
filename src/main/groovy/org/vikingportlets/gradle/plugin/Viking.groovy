@@ -38,15 +38,15 @@ class Viking implements Plugin<Project> {
         project.configurations { compile }
 
         project.repositories {
+            mavenLocal()
             mavenCentral()
             maven { url "http://morphia.googlecode.com/svn/mavenrepo" }
             maven { url "http://repo.gradle.org/gradle/repo" }
             maven { url "http://107.170.56.196:8081/artifactory/libs-release-local" }
         }
-        def liferayVersion = project.hasProperty("liferayVersion") ? project.liferayVersion : "6.1.1"
+        def liferayVersion = project.hasProperty("liferayVersion") ? project.liferayVersion : "6.2.1"
         
         project.dependencies {
-            compile 'org.vikingportlets:viking-framework:0.2.29'
             compile 'org.codehaus.groovy:groovy-all:2.1.3'
             providedCompile group: 'com.liferay.portal', name: 'portal-service', version: liferayVersion
             providedCompile group: 'com.liferay.portal', name: 'util-bridges', version: liferayVersion

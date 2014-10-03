@@ -86,9 +86,7 @@ class CreateProject extends DefaultTask {
             expand(projectName: project.name)
         }
 
-//        project.tasks["add"].ext.portletName = project.name
         project.viking.portletName = project.name
-        project.tasks["add"].execute()
     }
 
 }
