@@ -17,6 +17,7 @@ class CreateProject extends DefaultTask {
         // Project Structure definition
         def projectStructure = [
                 new File("$project.projectDir/conf"),
+                new File("$project.projectDir/i18n"),
                 new File("$project.projectDir/sitebuilder"),
                 new File("$project.projectDir/viking/models"),
                 new File("$project.projectDir/viking/controllers"),
@@ -42,6 +43,8 @@ class CreateProject extends DefaultTask {
             include 'dev.conf'
             include 'sitebuilder.conf'
             include 'log4j.properties'
+            include 'portal.properties'
+            include 'portlet.properties'
             expand([projectName: project.name, projectDir: project.projectDir])
         }
         
@@ -50,16 +53,25 @@ class CreateProject extends DefaultTask {
             into "viking/views/viking_macros"
             include '*'
         }
+
+        project.copy {
+            from '.templates/i18n'
+            into "i18n"
+            include '*'
+        }
+
         project.copy {
             from '.templates/public/css'
             into "public/css"
             include 'main.css'
         }
+
         project.copy {
             from '.templates/public/js'
             into "public/js"
             include '*/*'
         }
+
         project.copy {
             from '.templates/public/icon.png'
             into "public"

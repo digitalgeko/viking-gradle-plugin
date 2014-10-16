@@ -3,6 +3,7 @@ package org.vikingportlets.gradle.plugin.tasks
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.vikingportlets.gradle.plugin.utils.ConfUtils
+import org.vikingportlets.gradle.plugin.utils.LanguageUtils
 import org.vikingportlets.gradle.plugin.utils.PortletUtils
 
 /**
@@ -32,6 +33,8 @@ class GenerateConfig extends DefaultTask {
                             new File(it).listFiles().findAll { f -> f.name.endsWith(".js") }.collect { it.name.toString() }
                         }.flatten(),
                         conf: ConfUtils.getProjectConfig(project),
+						languageIds: LanguageUtils.getLanguageIds(project),
+
                 )
             }
         }
