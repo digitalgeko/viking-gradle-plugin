@@ -2,6 +2,7 @@ package org.vikingportlets.gradle.plugin.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
+import org.gradle.process.internal.DefaultExecAction
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,13 +15,17 @@ class CompileCoffee extends DefaultTask {
 
     @TaskAction
     def compile() {
-        def isWindows = System.properties['os.name'].toLowerCase().contains('windows')
-
-        project.exec {
-            if (isWindows)
-                commandLine 'cmd','/c','coffee', '--bare', '-o', "$project.buildDir/compiled_coffee/js", '-c', "$project.projectDir/public/coffee"
-            else
-                commandLine 'coffee', '--bare', '-o', "$project.buildDir/compiled_coffee/js", '-c', "$project.projectDir/public/coffee"
-        }
+		project.exec {
+			def isWindows = System.properties['os.name'].toLowerCase().contains('windows')
+			["$project.projectDir/viking/views", "$project.projectDir/public/coffee"].each {
+				DefaultExecAction command
+				if (isWindows) {
+					command = commandLine 'cmd','/c','coffee', '--bare', '-o', "$project.buildDir/compiled_coffee/js", '-c', it
+				} else {
+					command = commandLine 'coffee', '--bare', '-o', "$project.buildDir/compiled_coffee/js", '-c', it
+				}
+				command.execute().assertNormalExitValue()
+			}
+		}
     }
 }

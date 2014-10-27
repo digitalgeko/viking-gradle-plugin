@@ -3,7 +3,7 @@ package org.vikingportlets.gradle.plugin.tasks
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.vikingportlets.gradle.plugin.utils.ConfUtils
-import org.vikingportlets.gradle.plugin.utils.PortletUtils
+import org.vikingportlets.gradle.plugin.model.Portlet
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +16,7 @@ class AddFriendlyURLs extends DefaultTask {
 
     @TaskAction
     def generate() {
-        PortletUtils.getPortlets(project).each {
+        Portlet.getPortletPaths(project).each {
 
 	    def portletClassName = it.substring(it.lastIndexOf(File.separator)+1) - '.groovy'
             def dashedName = portletClassName.replaceAll(/(\B[A-Z])/, '-$1').toLowerCase()

@@ -98,7 +98,13 @@ class Viking implements Plugin<Project> {
             
             from 'public'
             exclude 'coffee'
-            from "$project.buildDir/compiled_coffee"
+
+			from "$project.buildDir/compiled_coffee"
+
+			from ("viking/views") {
+				include "**/*.js"
+				into "js"
+			}
 
             webInf {
                 from "$project.buildDir/urlmappings"
@@ -115,7 +121,9 @@ class Viking implements Plugin<Project> {
             }
 
             webInf {
-                from "$project.buildDir/$ProcessFiles.PROCESSED_VIEWS_FOLDER"
+                from ("$project.buildDir/$ProcessFiles.PROCESSED_VIEWS_FOLDER") {
+					include "**/*.ftl"
+				}
                 into "views"
             }
 
