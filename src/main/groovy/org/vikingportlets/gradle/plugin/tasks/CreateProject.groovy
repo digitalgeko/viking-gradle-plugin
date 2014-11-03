@@ -18,23 +18,15 @@ class CreateProject extends DefaultTask {
         def projectStructure = [
                 new File("$project.projectDir/conf"),
                 new File("$project.projectDir/i18n"),
+                new File("$project.projectDir/public"),
                 new File("$project.projectDir/sitebuilder"),
                 new File("$project.projectDir/viking/models"),
                 new File("$project.projectDir/viking/controllers"),
                 new File("$project.projectDir/viking/views"),
-                new File("$project.projectDir/public/images"),
-                new File("$project.projectDir/public/css"),
-                new File("$project.projectDir/public/js"),
-                new File("$project.projectDir/public/coffee"),
         ]
 
         println "Creating new project..."
         projectStructure.each { it.mkdirs() }
-
-        def coffeGitIgnore = new File("$project.projectDir/public/coffee/.gitignore")
-        if (!coffeGitIgnore.exists()) {
-            coffeGitIgnore.createNewFile()
-        }
 
         project.copy {
             from '.templates/conf'
@@ -61,27 +53,16 @@ class CreateProject extends DefaultTask {
         }
 
         project.copy {
-            from '.templates/public/css'
-            into "public/css"
-            include 'main.css'
-        }
-
-        project.copy {
-            from '.templates/public/js'
-            into "public/js"
-            include '*/*'
-        }
-
-        project.copy {
-            from '.templates/public/icon.png'
+            from '.templates/public'
             into "public"
-            include 'icon.png'
+            include '**/**'
         }
 
         project.copy {
-            from '.templates/public/coffee'
-            into "public/coffee"
-            include '.gitignore'
+            from '.templates/public'
+            into "public"
+            include 'js/angular/init.js'
+            expand(projectName: project.name)
         }
 
         project.copy {
@@ -91,11 +72,11 @@ class CreateProject extends DefaultTask {
             expand(projectName: project.name)
         }
 
-        project.copy {
-            from '.templates/public/js/angular'
-            into "public/js/angular"
-            include 'init.js'
-            expand(projectName: project.name)
+        ["coffee", "images"].each {
+            def coffeGitIgnore = new File("$project.projectDir/public/$it/.gitignore")
+            if (!coffeGitIgnore.exists()) {
+                coffeGitIgnore.createNewFile()
+            }
         }
 
         project.viking.portletName = project.name
