@@ -46,7 +46,7 @@ class Viking implements Plugin<Project> {
         def liferayVersion = project.hasProperty("liferayVersion") ? project.liferayVersion : "6.2.1"
         
         project.dependencies {
-            compile 'org.codehaus.groovy:groovy-all:2.1.3'
+            compile 'org.codehaus.groovy:groovy-all:2.3.6'
             providedCompile group: 'com.liferay.portal', name: 'portal-service', version: liferayVersion
             providedCompile group: 'com.liferay.portal', name: 'util-bridges', version: liferayVersion
             providedCompile group: 'com.liferay.portal', name: 'util-taglib', version: liferayVersion
@@ -54,9 +54,6 @@ class Viking implements Plugin<Project> {
             providedCompile group: 'javax.portlet', name: 'portlet-api', version: '2.0'
             providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.4'
             providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.0'
-            compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.0.1.Final'
-            compile group: 'com.google.code.morphia', name: 'morphia', version: '0.99'
-
             compile project.fileTree (dir: 'lib', includes: ['*.jar'])
             providedCompile project.fileTree(dir: 'provided_lib', includes: ['*.jar'])
         }
