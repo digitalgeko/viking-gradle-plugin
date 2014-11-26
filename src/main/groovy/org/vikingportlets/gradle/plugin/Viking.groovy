@@ -46,7 +46,6 @@ class Viking implements Plugin<Project> {
         def liferayVersion = project.hasProperty("liferayVersion") ? project.liferayVersion : "6.2.1"
         
         project.dependencies {
-            compile 'org.codehaus.groovy:groovy-all:2.3.6'
             providedCompile group: 'com.liferay.portal', name: 'portal-service', version: liferayVersion
             providedCompile group: 'com.liferay.portal', name: 'util-bridges', version: liferayVersion
             providedCompile group: 'com.liferay.portal', name: 'util-taglib', version: liferayVersion
@@ -56,6 +55,12 @@ class Viking implements Plugin<Project> {
             providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.0'
             compile project.fileTree (dir: 'lib', includes: ['*.jar'])
             providedCompile project.fileTree(dir: 'provided_lib', includes: ['*.jar'])
+
+            testCompile group: 'junit', name: 'junit', version: '4.11'
+            testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+            testCompile 'org.jboss.arquillian.graphene:graphene-webdriver:2.0.1.Final'
+            testCompile 'org.jboss.arquillian.spock:arquillian-spock-container:1.0.0.Beta3'
+            testCompile 'org.jboss.arquillian.container:arquillian-tomcat-remote-7:1.0.0.CR6'
         }
 
         project.task('version') << {
@@ -71,19 +76,16 @@ class Viking implements Plugin<Project> {
 
         def portletPluginPaths = ConfUtils.getPortletPluginPaths(project)
         
+        project.sourceSets.main.groovy.srcDirs += ['viking'] + portletPluginPaths
+        project.sourceSets.main.resources.srcDirs += ['conf', 'resources']
+        
+        project.sourceSets.test.groovy.srcDirs += ['test/integration', 'test/functional']
+        project.sourceSets.test.resources.srcDirs += ['test/resources']
+
         project.sourceSets {
             main {
                 groovy {
-                    srcDirs = ['viking'] + portletPluginPaths
                     exclude "viking/views"
-                }
-                resources {
-                    srcDirs = ['conf', 'resources']
-                }
-            }
-            test {
-                groovy {
-                    srcDirs = ['test']
                 }
             }
         }
@@ -132,6 +134,12 @@ class Viking implements Plugin<Project> {
             }			
 
             webXml = project.file('.templates/web.xml')
+        }
+
+        def  warFilePath = new File(project.buildDir, "libs/$project.war.archiveName").path
+        project.test {
+            dependsOn 'war'
+            systemProperty "viking.test.warFilePath", warFilePath
         }
 
         if (project.hasProperty("env") && project.env.toLowerCase() == "prod") {

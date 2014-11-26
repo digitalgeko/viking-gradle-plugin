@@ -53,6 +53,12 @@ class CreateProject extends DefaultTask {
         }
 
         project.copy {
+            from '.templates/test'
+            into "test"
+            include '**/**'
+        }
+
+        project.copy {
             from '.templates/public'
             into "public"
             include '**/**'
