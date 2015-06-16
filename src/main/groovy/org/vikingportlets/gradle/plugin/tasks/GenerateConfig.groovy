@@ -15,10 +15,17 @@ import org.vikingportlets.gradle.plugin.model.Portlet
  */
 class GenerateConfig extends DefaultTask {
 
-	def collectFiles (extension, directories) {
-		directories.collect {
-			new File(it).listFiles().findAll { f -> f.name.endsWith(extension) }.collect { it.name.toString() }
-		}.flatten()
+	def collectFiles (extension, directories, findRecursively = false) {
+        directories.findAll { new File(it).exists() }.collect {
+            def files = []
+            def parentDir = new File(it)
+            parentDir.eachFileRecurse(groovy.io.FileType.FILES) { f ->
+                if (f.name.endsWith(extension) && (findRecursively || f.parentFile == parentDir)) {
+                    files.push(f.path - "$it/")
+                }
+            }
+            files
+        }.flatten()
 	}
 
     @TaskAction
@@ -37,7 +44,7 @@ class GenerateConfig extends DefaultTask {
 						(it.portletName): collectFiles(".js", [
 								"$project.buildDir/compiled_coffee/js/${it.portletName}Portlet",
 								"$project.projectDir/viking/views/${it.portletName}Portlet"
-						])
+						], true)
 				]
 			}
 

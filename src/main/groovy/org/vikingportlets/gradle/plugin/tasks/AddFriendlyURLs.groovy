@@ -18,7 +18,7 @@ class AddFriendlyURLs extends DefaultTask {
     def generate() {
         Portlet.getPortletPaths(project).each {
 
-	    def portletClassName = it.substring(it.lastIndexOf(File.separator)+1) - '.groovy'
+	        def portletClassName = it.substring(it.lastIndexOf(File.separator)+1) - '.groovy'
             def dashedName = portletClassName.replaceAll(/(\B[A-Z])/, '-$1').toLowerCase()
 
             project.copy {

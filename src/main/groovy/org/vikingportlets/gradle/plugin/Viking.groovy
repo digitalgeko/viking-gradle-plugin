@@ -19,6 +19,7 @@ class Viking implements Plugin<Project> {
     public static final String PROCESS_FILES_TASK_NAME = "process-files"
     public static final String ADD_FRIENDLY_URLS = "add-friendlyURLs"
     public static final String DEPLOY_TASK_NAME = "deploy"
+    public static final String PROCESSED_WAR = "processed-war"
     public static final String COPY_ALL_DEPENDENCIES_TASK_NAME = "copy-all-dependencies"
 	public static final String BUILD_SITE_TASK_NAME = "build-site"
 
@@ -55,12 +56,6 @@ class Viking implements Plugin<Project> {
             providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.0'
             compile project.fileTree (dir: 'lib', includes: ['*.jar'])
             providedCompile project.fileTree(dir: 'provided_lib', includes: ['*.jar'])
-
-            testCompile group: 'junit', name: 'junit', version: '4.11'
-            testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
-            testCompile 'org.jboss.arquillian.graphene:graphene-webdriver:2.0.1.Final'
-            testCompile 'org.jboss.arquillian.spock:arquillian-spock-container:1.0.0.Beta3'
-            testCompile 'org.jboss.arquillian.container:arquillian-tomcat-remote-7:1.0.0.CR6'
         }
 
         project.task('version') << {
@@ -97,6 +92,7 @@ class Viking implements Plugin<Project> {
             
             from 'public'
             exclude 'coffee'
+            exclude "**/*.coffee"
 
 			from "$project.buildDir/compiled_coffee"
 
@@ -131,15 +127,16 @@ class Viking implements Plugin<Project> {
                     from "$portletPath/views"
                     into "views"
                 }
-            }			
+            }
 
             webXml = project.file('.templates/web.xml')
         }
 
         def  warFilePath = new File(project.buildDir, "libs/$project.war.archiveName").path
         project.test {
-            dependsOn 'war'
+            dependsOn 'processed-war'
             systemProperty "viking.test.warFilePath", warFilePath
+            systemProperty "viking.test.buildDir", project.buildDir.path
         }
 
         if (project.hasProperty("env") && project.env.toLowerCase() == "prod") {
@@ -176,6 +173,10 @@ class Viking implements Plugin<Project> {
 		def buildSite = project.tasks.create(BUILD_SITE_TASK_NAME, BuildSite.class)
 		buildSite.dependsOn("sitebuilder-create-zip")
 		buildSite.description = "Builds a site based on sitebuilder/sites.groovy contents"
+
+        def processedWar = project.tasks.create(PROCESSED_WAR, ProcessedWar.class)
+        processedWar.description = "Generates a liferay post-processed war."
+        processedWar.dependsOn('war')
 
 	}
 }
