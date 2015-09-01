@@ -18,18 +18,23 @@ class CompileCoffee extends DefaultTask {
     def compile() {
 		def isWindows = System.properties['os.name'].toLowerCase().contains('windows')
 		["$project.projectDir/viking/views", "$project.projectDir/public/coffee"].each {
-			Process command
 			if (isWindows) {
-				command = ['cmd','/c','coffee', '--bare', '-o', "$project.buildDir/compiled_coffee/js", '-c', it].execute()
+				exe(['cmd','/c','coffee', '--bare', '-o', "$project.buildDir/compiled_coffee/js", '-c', it])
 			} else {
-				command = ['coffee', '--bare', '-o', "$project.buildDir/compiled_coffee/js", '-c', it].execute()
-			}
-			command.waitFor()
-			def errOutput = command.err.text
-			if (errOutput) {
-				logger.error(errOutput)
-				throw new GradleException("Coffee script compilation failed")
+				exe(['coffee', '--bare', '-o', "$project.buildDir/compiled_coffee/js", '-c', it])
 			}
 		}
+        exe(['coffee', '--bare', '-o', "$project.buildDir/compiled_coffee", '-c', "$project.projectDir/public"])
+    }
+
+    def exe(cmd) {
+        Process command
+        command = cmd.execute()
+        command.waitFor()
+        def errOutput = command.err.text
+        if (errOutput) {
+            logger.error(errOutput)
+            throw new GradleException("Coffee script compilation failed")
+        }
     }
 }
